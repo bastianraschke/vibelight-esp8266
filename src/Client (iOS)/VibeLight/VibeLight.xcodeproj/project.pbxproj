@@ -15,7 +15,6 @@
 		03E7748F1D1AF256002C647F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 03E7748D1D1AF256002C647F /* LaunchScreen.storyboard */; };
 		03E7749A1D1AF256002C647F /* VibeLightTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03E774991D1AF256002C647F /* VibeLightTests.swift */; };
 		03E774A51D1AF256002C647F /* VibeLightUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03E774A41D1AF256002C647F /* VibeLightUITests.swift */; };
-		03E774B41D1B0408002C647F /* background.png in Resources */ = {isa = PBXBuildFile; fileRef = 03E774B31D1B0408002C647F /* background.png */; };
 		03E774B81D1B0677002C647F /* MQTTConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03E774B71D1B0677002C647F /* MQTTConnection.swift */; };
 		03E774BA1D1B0683002C647F /* KlosterTrust_Root_CA.crt in Resources */ = {isa = PBXBuildFile; fileRef = 03E774B91D1B0683002C647F /* KlosterTrust_Root_CA.crt */; };
 		05A55004F2FBE4F34CC3BD84 /* Pods_VibeLight.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 125E260384C812305272CA9B /* Pods_VibeLight.framework */; };
@@ -55,7 +54,6 @@
 		03E774A01D1AF256002C647F /* VibeLightUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = VibeLightUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		03E774A41D1AF256002C647F /* VibeLightUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VibeLightUITests.swift; sourceTree = "<group>"; };
 		03E774A61D1AF256002C647F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		03E774B31D1B0408002C647F /* background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = background.png; path = ../../../../../../Desktop/background.png; sourceTree = "<group>"; };
 		03E774B71D1B0677002C647F /* MQTTConnection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MQTTConnection.swift; sourceTree = "<group>"; };
 		03E774B91D1B0683002C647F /* KlosterTrust_Root_CA.crt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = KlosterTrust_Root_CA.crt; path = Ressources/KlosterTrust_Root_CA.crt; sourceTree = "<group>"; };
 		11542726AD47B165199F9F47 /* Pods-VibeLight.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VibeLight.debug.xcconfig"; path = "Pods/Target Support Files/Pods-VibeLight/Pods-VibeLight.debug.xcconfig"; sourceTree = "<group>"; };
@@ -157,7 +155,6 @@
 			isa = PBXGroup;
 			children = (
 				03E774B91D1B0683002C647F /* KlosterTrust_Root_CA.crt */,
-				03E774B31D1B0408002C647F /* background.png */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -298,7 +295,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				03E7748F1D1AF256002C647F /* LaunchScreen.storyboard in Resources */,
-				03E774B41D1B0408002C647F /* background.png in Resources */,
 				03E774BA1D1B0683002C647F /* KlosterTrust_Root_CA.crt in Resources */,
 				03E7748C1D1AF256002C647F /* Assets.xcassets in Resources */,
 				03E7748A1D1AF256002C647F /* Main.storyboard in Resources */,
