@@ -10,7 +10,6 @@ import UIKit
 
 class MainViewController: UIViewController
 {
-
     override func viewDidLoad()
     {
         super.viewDidLoad()
@@ -21,13 +20,54 @@ class MainViewController: UIViewController
         super.didReceiveMemoryWarning()
     }
 
+    private func buildCommand(sceneMode: SceneMode, color1: String, color2: String) -> String
+    {
+        var command: String = ""
+        
+        command += sceneMode.rawValue
+        command += color1
+        command += color2
+        
+        return command
+    }
+
     @IBAction func sunsetSceneButtonPressed(sender: UIButton)
     {
-        MQTTConnection.singletonInstance.client().publishString("29c97bfff8023", topic: "/vibelight/api/1.0/", qos: 2, retain: false)
+        let sceneType : SceneMode = SceneMode.MULTICOLOR
+
+        MQTTConnection.singletonInstance.client().publishString(self.buildCommand(sceneType, color1: "9c97bf", color2: "ff8023"),
+            topic: "/vibelight/api/1.0/",
+            qos: 2,
+            retain: false
+        )
+    }
+
+    @IBAction func warmWhiteSceneButtonPressed(sender: UIButton)
+    {
+        let sceneType : SceneMode = SceneMode.SINGLECOLOR
+
+        MQTTConnection.singletonInstance.client().publishString(self.buildCommand(sceneType, color1: "FFBE31", color2: "000000"),
+            topic: "/vibelight/api/1.0/",
+            qos: 2,
+            retain: false
+        )
     }
 
     @IBAction func offSceneButtonPressed(sender: UIButton)
     {
-        MQTTConnection.singletonInstance.client().publishString("0000000000000", topic: "/vibelight/api/1.0/", qos: 2, retain: false)
+        let sceneType : SceneMode = SceneMode.OFF
+
+        MQTTConnection.singletonInstance.client().publishString(self.buildCommand(sceneType, color1: "000000", color2: "000000"),
+            topic: "/vibelight/api/1.0/",
+            qos: 2,
+            retain: false
+        )
     }
+}
+
+enum SceneMode : String
+{
+    case OFF = "0"
+    case SINGLECOLOR = "1"
+    case MULTICOLOR = "2"
 }

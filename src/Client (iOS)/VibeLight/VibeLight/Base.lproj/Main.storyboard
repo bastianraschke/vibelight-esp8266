@@ -30,8 +30,19 @@
                                     <action selector="sunsetSceneButtonPressed:" destination="9pv-A4-QxB" eventType="touchUpInside" id="p2c-Cb-hee"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WL3-xC-r5Q">
+                                <rect key="frame" x="20" y="164" width="500" height="100"/>
+                                <color key="backgroundColor" red="0.98335255872483163" green="0.80736157718120805" blue="0.65742973993288589" alpha="1" colorSpace="calibratedRGB"/>
+                                <inset key="contentEdgeInsets" minX="10" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                <state key="normal" title="Warm white">
+                                    <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="warmWhiteSceneButtonPressed:" destination="9pv-A4-QxB" eventType="touchUpInside" id="6uk-WH-zSp"/>
+                                </connections>
+                            </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Pmw-CV-BkN">
-                                <rect key="frame" x="20" y="185" width="500" height="100"/>
+                                <rect key="frame" x="20" y="272" width="500" height="100"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.40142780172413794" colorSpace="calibratedWhite"/>
                                 <inset key="contentEdgeInsets" minX="10" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 <state key="normal" title="All lights off">
