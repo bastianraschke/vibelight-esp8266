@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		031824841D1BE93200D7C3E9 /* KeychainWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 031824831D1BE93200D7C3E9 /* KeychainWrapper.swift */; };
+		0318248D1D1C26CE00D7C3E9 /* appicon.png in Resources */ = {isa = PBXBuildFile; fileRef = 0318248B1D1C26CE00D7C3E9 /* appicon.png */; };
+		0318248E1D1C26CE00D7C3E9 /* KlosterTrust_Root_CA.crt in Resources */ = {isa = PBXBuildFile; fileRef = 0318248C1D1C26CE00D7C3E9 /* KlosterTrust_Root_CA.crt */; };
 		03E774831D1AF256002C647F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03E774821D1AF256002C647F /* AppDelegate.swift */; };
 		03E774851D1AF256002C647F /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03E774841D1AF256002C647F /* MainViewController.swift */; };
 		03E774871D1AF256002C647F /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03E774861D1AF256002C647F /* SettingsViewController.swift */; };
@@ -17,7 +19,6 @@
 		03E7749A1D1AF256002C647F /* VibeLightTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03E774991D1AF256002C647F /* VibeLightTests.swift */; };
 		03E774A51D1AF256002C647F /* VibeLightUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03E774A41D1AF256002C647F /* VibeLightUITests.swift */; };
 		03E774B81D1B0677002C647F /* MQTTConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03E774B71D1B0677002C647F /* MQTTConnection.swift */; };
-		03E774BA1D1B0683002C647F /* KlosterTrust_Root_CA.crt in Resources */ = {isa = PBXBuildFile; fileRef = 03E774B91D1B0683002C647F /* KlosterTrust_Root_CA.crt */; };
 		05A55004F2FBE4F34CC3BD84 /* Pods_VibeLight.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 125E260384C812305272CA9B /* Pods_VibeLight.framework */; };
 		14B97D5E102D746339254CC5 /* Pods_VibeLightUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6B2421E2C13EF45C7A5F166F /* Pods_VibeLightUITests.framework */; };
 		4CC0084ABBE9438ECA8B4680 /* Pods_VibeLightTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 68535E256AD74989AEB90039 /* Pods_VibeLightTests.framework */; };
@@ -42,6 +43,8 @@
 
 /* Begin PBXFileReference section */
 		031824831D1BE93200D7C3E9 /* KeychainWrapper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeychainWrapper.swift; sourceTree = "<group>"; };
+		0318248B1D1C26CE00D7C3E9 /* appicon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = appicon.png; sourceTree = "<group>"; };
+		0318248C1D1C26CE00D7C3E9 /* KlosterTrust_Root_CA.crt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = KlosterTrust_Root_CA.crt; sourceTree = "<group>"; };
 		03E7747F1D1AF256002C647F /* VibeLight.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = VibeLight.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		03E774821D1AF256002C647F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		03E774841D1AF256002C647F /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
@@ -57,7 +60,6 @@
 		03E774A41D1AF256002C647F /* VibeLightUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VibeLightUITests.swift; sourceTree = "<group>"; };
 		03E774A61D1AF256002C647F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		03E774B71D1B0677002C647F /* MQTTConnection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MQTTConnection.swift; sourceTree = "<group>"; };
-		03E774B91D1B0683002C647F /* KlosterTrust_Root_CA.crt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = KlosterTrust_Root_CA.crt; path = Ressources/KlosterTrust_Root_CA.crt; sourceTree = "<group>"; };
 		11542726AD47B165199F9F47 /* Pods-VibeLight.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VibeLight.debug.xcconfig"; path = "Pods/Target Support Files/Pods-VibeLight/Pods-VibeLight.debug.xcconfig"; sourceTree = "<group>"; };
 		125E260384C812305272CA9B /* Pods_VibeLight.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_VibeLight.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		506A1EC35B097D999E046AAD /* Pods-VibeLightUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VibeLightUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-VibeLightUITests/Pods-VibeLightUITests.release.xcconfig"; sourceTree = "<group>"; };
@@ -165,9 +167,10 @@
 		03E774B21D1AFDA6002C647F /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				03E774B91D1B0683002C647F /* KlosterTrust_Root_CA.crt */,
+				0318248B1D1C26CE00D7C3E9 /* appicon.png */,
+				0318248C1D1C26CE00D7C3E9 /* KlosterTrust_Root_CA.crt */,
 			);
-			name = Resources;
+			path = Resources;
 			sourceTree = "<group>";
 		};
 		0ACF5EF3138A4277434B19AC /* Pods */ = {
@@ -206,6 +209,7 @@
 				03E7747D1D1AF256002C647F /* Resources */,
 				520B6337613BCAA41275E0D4 /* 📦 Embed Pods Frameworks */,
 				B9FDF251AB5AD93CF16CC21C /* 📦 Copy Pods Resources */,
+				031824881D1C25F000D7C3E9 /* Generate Icon */,
 			);
 			buildRules = (
 			);
@@ -306,8 +310,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				03E7748F1D1AF256002C647F /* LaunchScreen.storyboard in Resources */,
-				03E774BA1D1B0683002C647F /* KlosterTrust_Root_CA.crt in Resources */,
 				03E7748C1D1AF256002C647F /* Assets.xcassets in Resources */,
+				0318248E1D1C26CE00D7C3E9 /* KlosterTrust_Root_CA.crt in Resources */,
+				0318248D1D1C26CE00D7C3E9 /* appicon.png in Resources */,
 				03E7748A1D1AF256002C647F /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -329,6 +334,20 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		031824881D1C25F000D7C3E9 /* Generate Icon */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Generate Icon";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "#!/bin/sh\n\nSOURCE_DIR=\"${SOURCE_ROOT}/VibeLight/Resources/appicon.png\"\n\n\ncd \"${SOURCE_ROOT}/VibeLight/Assets.xcassets/AppIcon.appiconset/\"\n\ncp \"${SOURCE_DIR}\" \"Icon_iPhone_29pt@2x.png\"\ncp \"${SOURCE_DIR}\" \"Icon_iPhone_29pt@3x.png\"\n\ncp \"${SOURCE_DIR}\" \"Icon_iPhone_40pt@2x.png\"\ncp \"${SOURCE_DIR}\" \"Icon_iPhone_40pt@3x.png\"\n\ncp \"${SOURCE_DIR}\" \"Icon_iPhone_60pt@2x.png\"\ncp \"${SOURCE_DIR}\" \"Icon_iPhone_60pt@3x.png\"\n\nsips -z 58 58 \"Icon_iPhone_29pt@2x.png\"\nsips -z 87 87 \"Icon_iPhone_29pt@3x.png\"\n\nsips -z 80 80 \"Icon_iPhone_40pt@2x.png\"\nsips -z 120 120 \"Icon_iPhone_40pt@3x.png\"\n\nsips -z 120 120 \"Icon_iPhone_60pt@2x.png\"\nsips -z 180 180 \"Icon_iPhone_60pt@3x.png\"\n";
+		};
 		236CA5548FE1B38BEDB77CC1 /* 📦 Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;

@@ -17,8 +17,15 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="appicon.png" translatesAutoresizingMaskIntoConstraints="NO" id="T3D-Gx-icS">
+                                <rect key="frame" x="225" y="225" width="150" height="150"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="150" id="cA1-w0-F0M"/>
+                                    <constraint firstAttribute="height" constant="150" id="qNy-eA-Y9L"/>
+                                </constraints>
+                            </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="VibeLight" textAlignment="justified" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="s4Y-iL-UH0">
-                                <rect key="frame" x="240" y="189" width="113" height="51"/>
+                                <rect key="frame" x="245" y="284" width="112" height="33"/>
                                 <fontDescription key="fontDescription" style="UICTFontTextStyleTitle1"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <color key="highlightedColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -27,8 +34,10 @@
                         </subviews>
                         <color key="backgroundColor" white="0.16733955536912751" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="s4Y-iL-UH0" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="3M3-Pp-niv"/>
-                            <constraint firstItem="s4Y-iL-UH0" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="JG3-UC-lgq"/>
+                            <constraint firstItem="s4Y-iL-UH0" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="1QR-2I-za6"/>
+                            <constraint firstItem="T3D-Gx-icS" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="AfQ-Uj-GkI"/>
+                            <constraint firstItem="s4Y-iL-UH0" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="BJO-yv-Je6"/>
+                            <constraint firstItem="T3D-Gx-icS" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="OSI-3g-qPx"/>
                         </constraints>
                     </view>
                 </viewController>
@@ -37,4 +46,7 @@
             <point key="canvasLocation" x="53" y="375"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="appicon.png" width="369" height="369"/>
+    </resources>
 </document>
