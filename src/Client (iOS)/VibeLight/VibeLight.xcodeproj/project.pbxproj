@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		031824841D1BE93200D7C3E9 /* KeychainWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 031824831D1BE93200D7C3E9 /* KeychainWrapper.swift */; };
 		03E774831D1AF256002C647F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03E774821D1AF256002C647F /* AppDelegate.swift */; };
 		03E774851D1AF256002C647F /* FirstViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03E774841D1AF256002C647F /* FirstViewController.swift */; };
 		03E774871D1AF256002C647F /* SecondViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03E774861D1AF256002C647F /* SecondViewController.swift */; };
@@ -40,6 +41,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		031824831D1BE93200D7C3E9 /* KeychainWrapper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeychainWrapper.swift; sourceTree = "<group>"; };
 		03E7747F1D1AF256002C647F /* VibeLight.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = VibeLight.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		03E774821D1AF256002C647F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		03E774841D1AF256002C647F /* FirstViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstViewController.swift; sourceTree = "<group>"; };
@@ -124,6 +126,7 @@
 				03E774821D1AF256002C647F /* AppDelegate.swift */,
 				03E774841D1AF256002C647F /* FirstViewController.swift */,
 				03E774861D1AF256002C647F /* SecondViewController.swift */,
+				031824831D1BE93200D7C3E9 /* KeychainWrapper.swift */,
 				03E774B21D1AFDA6002C647F /* Resources */,
 				03E774881D1AF256002C647F /* Main.storyboard */,
 				03E7748B1D1AF256002C647F /* Assets.xcassets */,
@@ -449,6 +452,7 @@
 				03E774B81D1B0677002C647F /* MQTTConnection.swift in Sources */,
 				03E774831D1AF256002C647F /* AppDelegate.swift in Sources */,
 				03E774851D1AF256002C647F /* FirstViewController.swift in Sources */,
+				031824841D1BE93200D7C3E9 /* KeychainWrapper.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

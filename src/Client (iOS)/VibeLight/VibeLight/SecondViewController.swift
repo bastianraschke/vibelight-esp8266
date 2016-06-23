@@ -7,23 +7,19 @@
 //
 
 import UIKit
-import KeychainAccess
 
 class SecondViewController: UIViewController {
 
     @IBOutlet weak var username: UITextField!
     @IBOutlet weak var password: UITextField!
     
-    private var keychain: Keychain = Keychain(service: "de.sicherheitskritisch.VibeLight")
-
     override func viewDidLoad()
     {
-        let usernameFromKeychain = readStringFromKeychain("mqtt_username")
-        let passwordFromKeychain = readStringFromKeychain("mqtt_password")
+        let usernameFromKeychain = KeychainWrapper.singletonInstance.readUsernameFromKeychain()
+        let passwordFromKeychain = KeychainWrapper.singletonInstance.readPasswordFromKeychain()
         
         self.username.text = usernameFromKeychain
         self.password.text = passwordFromKeychain
-    
     
         super.viewDidLoad()
     }
@@ -32,7 +28,7 @@ class SecondViewController: UIViewController {
     {
         if (username.text != "" && password.text != "")
         {
-            if (self.saveUsernameAndPasswordInKeychain(username.text!, password: password.text!))
+            if (KeychainWrapper.singletonInstance.saveUsernameAndPasswordInKeychain(username.text!, password: password.text!))
             {
                 self.showAlertMessage("Successful saved!")
             }
@@ -56,46 +52,4 @@ class SecondViewController: UIViewController {
 
         presentViewController(alertController, animated: true, completion: nil)
     }
-
-    private func readStringFromKeychain(key: String) -> String
-    {
-        var value: String = ""
-    
-        do
-        {
-            let readValue = try keychain.get(key)
-
-            if (readValue != nil)
-            {
-               value = readValue!
-            }
-        }
-        catch let error
-        {
-            print("Exception occured: \(error)")
-        }
-        
-        return value
-    }
-
-    private func saveUsernameAndPasswordInKeychain(username: String, password: String) -> Bool
-    {
-        var success: Bool = false
-        do
-        {
-            try keychain.set(username, key: "mqtt_username")
-            try keychain.set(password, key: "mqtt_password")
-            
-            success = true
-        }
-        catch let error
-        {
-            print("Exception occured: \(error)")
-        }
-        
-        return success
-    }
-
-
-
 }
