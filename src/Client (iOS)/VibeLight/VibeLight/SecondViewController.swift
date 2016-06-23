@@ -22,6 +22,25 @@ class SecondViewController: UIViewController {
 
     @IBAction func saveButtonPressed(sender: UIButton) {
         NSLog("Button pressed")
+        
+        if (username.text != "")
+        {
+            NSLog(username.text!)
+        }
+        else
+        {
+            NSLog("No username provided!");
+        }
+        
+
+        if (password.text != "")
+        {
+            NSLog(password.text!)
+        }
+        else
+        {
+            NSLog("No password provided!");
+        }
     }
 
 }
