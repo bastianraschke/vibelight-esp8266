@@ -12,6 +12,7 @@ class MainViewController: UIViewController
 {
     override func viewDidLoad()
     {
+        self.edgesForExtendedLayout = .All
         super.viewDidLoad()
     }
 

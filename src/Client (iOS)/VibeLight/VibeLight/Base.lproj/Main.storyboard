@@ -18,11 +18,11 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="background" translatesAutoresizingMaskIntoConstraints="NO" id="9Xb-F8-yZh">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="background" translatesAutoresizingMaskIntoConstraints="NO" id="9Xb-F8-yZh">
                                 <rect key="frame" x="-14" y="-171" width="628" height="942"/>
                             </imageView>
-                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rkc-71-AVl">
-                                <rect key="frame" x="20" y="93" width="560" height="68"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rkc-71-AVl">
+                                <rect key="frame" x="20" y="74" width="560" height="50"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="50" id="qY5-zn-3IR"/>
                                 </constraints>
@@ -34,41 +34,9 @@
                                     <action selector="sunsetSceneButtonPressed:" destination="9pv-A4-QxB" eventType="touchUpInside" id="p2c-Cb-hee"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WL3-xC-r5Q">
-                                <rect key="frame" x="20" y="245" width="560" height="68"/>
-                                <color key="backgroundColor" red="0.98335255872483163" green="0.80736157718120805" blue="0.6690174077181209" alpha="1" colorSpace="calibratedRGB"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="68" id="qLX-g9-7PK"/>
-                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="50" id="yNJ-hi-v2c"/>
-                                </constraints>
-                                <inset key="contentEdgeInsets" minX="10" minY="0.0" maxX="0.0" maxY="0.0"/>
-                                <state key="normal" title="Warm white">
-                                    <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <connections>
-                                    <action selector="warmWhiteSceneButtonPressed:" destination="9pv-A4-QxB" eventType="touchUpInside" id="6uk-WH-zSp"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Pmw-CV-BkN">
-                                <rect key="frame" x="20" y="321" width="560" height="68"/>
-                                <color key="backgroundColor" white="0.0" alpha="0.40142780172413794" colorSpace="calibratedWhite"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="50" id="H13-8j-nv2"/>
-                                </constraints>
-                                <inset key="contentEdgeInsets" minX="10" minY="0.0" maxX="0.0" maxY="0.0"/>
-                                <state key="normal" title="All lights off">
-                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <connections>
-                                    <action selector="offSceneButtonPressed:" destination="9pv-A4-QxB" eventType="touchUpInside" id="Z84-JK-FgJ"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ee9-MY-nzg">
-                                <rect key="frame" x="20" y="169" width="560" height="68"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ee9-MY-nzg">
+                                <rect key="frame" x="20" y="134" width="560" height="50"/>
                                 <color key="backgroundColor" red="0.72373074293136597" green="0.16448286175727844" blue="0.93478339910507202" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="50" id="0Wj-SY-LSy"/>
-                                </constraints>
                                 <inset key="contentEdgeInsets" minX="10" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 <state key="normal" title="Violet scene">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -77,22 +45,65 @@
                                     <action selector="violetSceneButtonPressed:" destination="9pv-A4-QxB" eventType="touchUpInside" id="G3w-bz-qjn"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WL3-xC-r5Q">
+                                <rect key="frame" x="20" y="194" width="560" height="50"/>
+                                <color key="backgroundColor" red="0.98335255872483163" green="0.80736157718120805" blue="0.6690174077181209" alpha="1" colorSpace="calibratedRGB"/>
+                                <inset key="contentEdgeInsets" minX="10" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                <state key="normal" title="Warm white">
+                                    <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="warmWhiteSceneButtonPressed:" destination="9pv-A4-QxB" eventType="touchUpInside" id="6uk-WH-zSp"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Pmw-CV-BkN">
+                                <rect key="frame" x="20" y="254" width="560" height="50"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.40142780172413794" colorSpace="calibratedWhite"/>
+                                <inset key="contentEdgeInsets" minX="10" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                <state key="normal" title="All lights off">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="offSceneButtonPressed:" destination="9pv-A4-QxB" eventType="touchUpInside" id="Z84-JK-FgJ"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="0.19714765100000001" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="Pmw-CV-BkN" firstAttribute="top" secondItem="WL3-xC-r5Q" secondAttribute="bottom" constant="10" id="2iQ-40-LBf"/>
                             <constraint firstItem="WL3-xC-r5Q" firstAttribute="top" secondItem="ee9-MY-nzg" secondAttribute="bottom" constant="10" id="3qY-I1-BFr"/>
                             <constraint firstItem="ee9-MY-nzg" firstAttribute="trailing" secondItem="tsR-hK-woN" secondAttribute="trailingMargin" constant="10" id="55q-g3-0my"/>
-                            <constraint firstItem="rkc-71-AVl" firstAttribute="trailing" secondItem="tsR-hK-woN" secondAttribute="trailingMargin" constant="10" id="C9v-Nw-E13"/>
-                            <constraint firstItem="rkc-71-AVl" firstAttribute="leading" secondItem="tsR-hK-woN" secondAttribute="leadingMargin" constant="10" id="GgS-UG-ulI"/>
+                            <constraint firstItem="Pmw-CV-BkN" firstAttribute="trailing" secondItem="WL3-xC-r5Q" secondAttribute="trailing" id="7hj-zD-hJ8"/>
+                            <constraint firstItem="9Xb-F8-yZh" firstAttribute="centerY" secondItem="tsR-hK-woN" secondAttribute="centerY" id="Akb-tY-Om7"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="rkc-71-AVl" secondAttribute="trailing" id="C9v-Nw-E13"/>
+                            <constraint firstItem="rkc-71-AVl" firstAttribute="leading" secondItem="tsR-hK-woN" secondAttribute="leadingMargin" id="GgS-UG-ulI"/>
+                            <constraint firstItem="ee9-MY-nzg" firstAttribute="trailing" secondItem="rkc-71-AVl" secondAttribute="trailing" id="Jjt-r9-L53"/>
                             <constraint firstItem="WL3-xC-r5Q" firstAttribute="trailing" secondItem="tsR-hK-woN" secondAttribute="trailingMargin" constant="10" id="LwW-vt-Kx4"/>
+                            <constraint firstItem="ee9-MY-nzg" firstAttribute="height" secondItem="rkc-71-AVl" secondAttribute="height" id="Nas-EJ-cjO"/>
                             <constraint firstItem="ee9-MY-nzg" firstAttribute="top" secondItem="rkc-71-AVl" secondAttribute="bottom" constant="10" id="RUM-z0-6yc"/>
+                            <constraint firstItem="WL3-xC-r5Q" firstAttribute="trailing" secondItem="ee9-MY-nzg" secondAttribute="trailing" id="Xck-db-mv8"/>
+                            <constraint firstItem="Pmw-CV-BkN" firstAttribute="height" secondItem="WL3-xC-r5Q" secondAttribute="height" id="YX1-A8-MzF"/>
+                            <constraint firstItem="Pmw-CV-BkN" firstAttribute="leading" secondItem="WL3-xC-r5Q" secondAttribute="leading" id="cTa-Ay-au2"/>
                             <constraint firstItem="Pmw-CV-BkN" firstAttribute="leading" secondItem="tsR-hK-woN" secondAttribute="leadingMargin" constant="10" id="dz5-lD-mac"/>
                             <constraint firstItem="rkc-71-AVl" firstAttribute="top" secondItem="Ia1-K6-d13" secondAttribute="bottom" constant="10" id="gyq-ea-ibW"/>
                             <constraint firstItem="Pmw-CV-BkN" firstAttribute="trailing" secondItem="tsR-hK-woN" secondAttribute="trailingMargin" constant="10" id="iCe-jP-psm"/>
+                            <constraint firstItem="WL3-xC-r5Q" firstAttribute="leading" secondItem="ee9-MY-nzg" secondAttribute="leading" id="lp5-vq-qcg"/>
+                            <constraint firstItem="9Xb-F8-yZh" firstAttribute="centerX" secondItem="tsR-hK-woN" secondAttribute="centerX" id="mYO-0B-hxJ"/>
+                            <constraint firstItem="WL3-xC-r5Q" firstAttribute="height" secondItem="ee9-MY-nzg" secondAttribute="height" id="mvy-rF-kzp"/>
                             <constraint firstItem="ee9-MY-nzg" firstAttribute="leading" secondItem="tsR-hK-woN" secondAttribute="leadingMargin" constant="10" id="pOD-X1-qnK"/>
+                            <constraint firstItem="ee9-MY-nzg" firstAttribute="leading" secondItem="rkc-71-AVl" secondAttribute="leading" id="rcd-rT-ooo"/>
                             <constraint firstItem="WL3-xC-r5Q" firstAttribute="leading" secondItem="tsR-hK-woN" secondAttribute="leadingMargin" constant="10" id="vLC-Wz-4QI"/>
                         </constraints>
+                        <variation key="default">
+                            <mask key="constraints">
+                                <exclude reference="55q-g3-0my"/>
+                                <exclude reference="pOD-X1-qnK"/>
+                                <exclude reference="LwW-vt-Kx4"/>
+                                <exclude reference="vLC-Wz-4QI"/>
+                                <exclude reference="dz5-lD-mac"/>
+                                <exclude reference="iCe-jP-psm"/>
+                            </mask>
+                        </variation>
                     </view>
                     <tabBarItem key="tabBarItem" title="VibeLights" image="first" id="acW-dT-cKf"/>
                     <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
@@ -192,6 +203,7 @@
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="za1-R1-h9G">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
+                        <color key="tintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <color key="barTintColor" red="0.9959825873374939" green="0.99621325731277466" blue="0.99187678098678589" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </navigationBar>
                     <connections>
