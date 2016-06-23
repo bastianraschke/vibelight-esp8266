@@ -1,5 +1,5 @@
 //
-//  SecondViewController.swift
+//  SettingsViewController.swift
 //  VibeLight
 //
 //  Created by Bastian Raschke on 22.06.16.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-class SecondViewController: UIViewController {
+class SettingsViewController: UIViewController {
 
     @IBOutlet weak var username: UITextField!
     @IBOutlet weak var password: UITextField!
@@ -31,6 +31,7 @@ class SecondViewController: UIViewController {
             if (KeychainWrapper.singletonInstance.saveUsernameAndPasswordInKeychain(username.text!, password: password.text!))
             {
                 self.showAlertMessage("Successful saved!")
+                MQTTConnection.singletonInstance.reconnect(true)
             }
             else
             {

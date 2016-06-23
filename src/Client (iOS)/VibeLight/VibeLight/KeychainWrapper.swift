@@ -26,6 +26,7 @@ class KeychainWrapper
     func saveUsernameAndPasswordInKeychain(username: String, password: String) -> Bool
     {
         var success: Bool = false
+
         do
         {
             try keychain.set(username, key: "mqtt_username")

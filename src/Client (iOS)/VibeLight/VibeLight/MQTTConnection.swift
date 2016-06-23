@@ -17,23 +17,59 @@ class MQTTConnection
     var mqttUsername: String = ""
     var mqttPassword: String = ""
     
-    var mqttClient: MQTTClient!
+    var mqttClient: MQTTClient?
     var onSubscriptionMessageObservers = Array<OnSubscriptionMessageObserver>()
     
     private init()
     {
         // Initialize Moscapsule TLS stack
         moscapsule_init()
-        
+    }
+    
+    func connect()
+    {
         mqttHost = "mqtt.sicherheitskritisch.de"
         mqttPort = 8883
-        mqttUsername = "username"
-        mqttPassword = "password"
-        
-        // Try to connect to MQTT server
+        mqttUsername = KeychainWrapper.singletonInstance.readUsernameFromKeychain()
+        mqttPassword = KeychainWrapper.singletonInstance.readPasswordFromKeychain()
+
+        NSLog("Try to establish new connection...")
+    
         do
         {
-            try connect()
+            let mqttConfig = MQTTConfig(clientId: "VibeLight iOS Client 1.0", host: mqttHost, port: mqttPort, keepAlive: 60)
+
+            guard let caCertificateFile = NSBundle.mainBundle().pathForResource("KlosterTrust_Root_CA", ofType: "crt") else
+            {
+                throw ConnectError.NoCACertificateFound
+            }
+            
+            mqttConfig.mqttAuthOpts = MQTTAuthOpts(username: mqttUsername, password: mqttPassword)
+            mqttConfig.mqttServerCert = MQTTServerCert(cafile: caCertificateFile, capath: nil)
+            mqttConfig.mqttTlsOpts = MQTTTlsOpts(tls_insecure: false, cert_reqs: CertReqs.SSL_VERIFY_PEER, tls_version: "tlsv1.1", ciphers: "AES256-SHA")
+
+            mqttConfig.onMessageCallback = { mqttMessage in
+                for observer in self.onSubscriptionMessageObservers
+                {
+                    observer.messageWasReceived(mqttMessage)
+                }
+            }
+
+            //let newMQTTClient = MQTT.newConnection(mqttConfig) // connectImmediately: true
+            
+//            // Check if the connection was successful
+//            if (newMQTTClient.isConnected == false)
+//            {
+//                //NSLog("Connection failed! Disconnecting...")
+//                //newMQTTClient.disconnect();
+//            }
+//            else
+//            {
+//                self.mqttClient = newMQTTClient
+//            }
+        
+            mqttClient = MQTT.newConnection(mqttConfig, connectImmediately: true)
+        
         }
         catch ConnectError.NoCACertificateFound
         {
@@ -41,36 +77,36 @@ class MQTTConnection
         }
         catch _
         {
+            NSLog("Unknown error occured while connecting to MQTT server!")
         }
     }
     
-    private func connect() throws
+    func reconnect(forceReconnect: Bool = false)
     {
-        let mqttConfig = MQTTConfig(clientId: "VibeLight iOS Client 1.0", host: mqttHost, port: mqttPort, keepAlive: 60)
-
-        guard let caCertificateFile = NSBundle.mainBundle().pathForResource("KlosterTrust_Root_CA", ofType: "crt") else
+        if (forceReconnect == true)
         {
-            throw ConnectError.NoCACertificateFound
+            connect()
         }
-        
-        mqttConfig.mqttAuthOpts = MQTTAuthOpts(username: mqttUsername, password: mqttPassword)
-        mqttConfig.mqttServerCert = MQTTServerCert(cafile: caCertificateFile, capath: nil)
-        mqttConfig.mqttTlsOpts = MQTTTlsOpts(tls_insecure: false, cert_reqs: CertReqs.SSL_VERIFY_PEER, tls_version: "tlsv1.1", ciphers: "AES256-SHA")
-
-        mqttConfig.onMessageCallback = { mqttMessage in
-            for observer in self.onSubscriptionMessageObservers
+        else
+        {
+            if (mqttClient != nil && mqttClient!.isConnected == false)
             {
-                observer.messageWasReceived(mqttMessage)
+                mqttClient!.reconnect();
+            }
+            else
+            {
+                connect()
             }
         }
-
-        NSLog("Create new connection...")
-        mqttClient = MQTT.newConnection(mqttConfig)
     }
     
-    func client() -> MQTTClient
+    func disconnect()
     {
-        return mqttClient
+        if (mqttClient != nil && mqttClient!.isConnected == true)
+        {
+            NSLog("Disconnecting...")
+            mqttClient!.disconnect();
+        }
     }
     
     func addOnSubscriptionMessageObserver(observer : OnSubscriptionMessageObserver)

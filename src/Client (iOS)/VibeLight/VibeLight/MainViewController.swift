@@ -1,5 +1,5 @@
 //
-//  FirstViewController.swift
+//  MainViewController.swift
 //  VibeLight
 //
 //  Created by Bastian Raschke on 22.06.16.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-class FirstViewController: UIViewController {
+class MainViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
