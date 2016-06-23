@@ -8,18 +8,26 @@
 
 import UIKit
 
-class MainViewController: UIViewController {
+class MainViewController: UIViewController
+{
 
-    override func viewDidLoad() {
+    override func viewDidLoad()
+    {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
     }
 
-    override func didReceiveMemoryWarning() {
+    override func didReceiveMemoryWarning()
+    {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
 
+    @IBAction func sunsetSceneButtonPressed(sender: UIButton)
+    {
+        MQTTConnection.singletonInstance.client().publishString("29c97bfff8023", topic: "/vibelight/api/1.0/", qos: 2, retain: false)
+    }
 
+    @IBAction func offSceneButtonPressed(sender: UIButton)
+    {
+        MQTTConnection.singletonInstance.client().publishString("0000000000000", topic: "/vibelight/api/1.0/", qos: 2, retain: false)
+    }
 }
-
