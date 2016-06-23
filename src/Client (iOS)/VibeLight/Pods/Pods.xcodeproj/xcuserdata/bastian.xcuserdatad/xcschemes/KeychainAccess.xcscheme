@@ -14,10 +14,10 @@
             buildForArchiving = "YES">
             <BuildableReference
                BuildableIdentifier = 'primary'
-               BlueprintIdentifier = 'E0EFF71709238F6ADE7BE6C6E52A0353'
-               BlueprintName = 'Pods-VibeLightTests'
+               BlueprintIdentifier = '838A2C6DA366DE138E5FDF1AF19D94C0'
+               BlueprintName = 'KeychainAccess'
                ReferencedContainer = 'container:Pods.xcodeproj'
-               BuildableName = 'Pods-VibeLightTests.framework'>
+               BuildableName = 'KeychainAccess.framework'>
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>

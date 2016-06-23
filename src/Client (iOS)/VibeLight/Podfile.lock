@@ -1,8 +1,10 @@
 PODS:
+  - KeychainAccess (2.3.5)
   - Moscapsule (0.5.2)
   - OpenSSL-Universal (1.0.1.19)
 
 DEPENDENCIES:
+  - KeychainAccess
   - Moscapsule (from `https://github.com/flightonary/Moscapsule.git`)
   - OpenSSL-Universal (~> 1.0.1.18)
 
@@ -16,9 +18,10 @@ CHECKOUT OPTIONS:
     :git: https://github.com/flightonary/Moscapsule.git
 
 SPEC CHECKSUMS:
+  KeychainAccess: e283c1981a6c5655e1984cd411c6faf16fa165ae
   Moscapsule: 16da766e698792911aafd11d9a26c6dbc42199f4
   OpenSSL-Universal: 07489b0316f0f4f53c928e402e2ecbbedf96d93b
 
-PODFILE CHECKSUM: 38a3b8fb369b9828cb9f32197ea4a75eaec95bf1
+PODFILE CHECKSUM: 8ce792984ec25461a1bf9dcfbc18d7fca540d1ae
 
 COCOAPODS: 1.0.0
