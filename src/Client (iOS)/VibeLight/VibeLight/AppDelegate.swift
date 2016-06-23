@@ -24,12 +24,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate
 
     func applicationDidEnterBackground(application: UIApplication)
     {
+        // Disconnect when in background
         MQTTConnection.singletonInstance.disconnect()
     }
 
     func applicationWillEnterForeground(application: UIApplication)
     {
-        MQTTConnection.singletonInstance.reconnect()
+        // Try to reconnect
+        MQTTConnection.singletonInstance.connect()
     }
 }
 

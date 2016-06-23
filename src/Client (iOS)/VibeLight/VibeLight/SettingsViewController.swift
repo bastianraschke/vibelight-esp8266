@@ -31,7 +31,9 @@ class SettingsViewController: UIViewController {
             if (KeychainWrapper.singletonInstance.saveUsernameAndPasswordInKeychain(username.text!, password: password.text!))
             {
                 self.showAlertMessage("Successful saved!")
-                MQTTConnection.singletonInstance.reconnect(true)
+                
+                // Force reconnect
+                MQTTConnection.singletonInstance.connect(true)
             }
             else
             {

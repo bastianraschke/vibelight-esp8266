@@ -12,13 +12,8 @@ class MQTTConnection
 {
     static let singletonInstance = MQTTConnection()
     
-    var mqttHost: String = ""
-    var mqttPort: Int32 = 8883
-    var mqttUsername: String = ""
-    var mqttPassword: String = ""
-    
-    var mqttClient: MQTTClient?
-    var onSubscriptionMessageObservers = Array<OnSubscriptionMessageObserver>()
+    private var _mqttClient: MQTTClient?
+    private var _onSubscriptionMessageObservers = Array<OnSubscriptionMessageObserver>()
     
     private init()
     {
@@ -26,12 +21,27 @@ class MQTTConnection
         moscapsule_init()
     }
     
-    func connect()
+    func connect(forceReconnect: Bool = false)
     {
-        mqttHost = "mqtt.sicherheitskritisch.de"
-        mqttPort = 8883
-        mqttUsername = KeychainWrapper.singletonInstance.readUsernameFromKeychain()
-        mqttPassword = KeychainWrapper.singletonInstance.readPasswordFromKeychain()
+        // Automatically reconnect if connection is existing when forceReconnect is false
+        if ( (_mqttClient != nil && _mqttClient!.isConnected == false) && forceReconnect == false )
+        {
+            NSLog("Try to reconnect to existing connection...")
+        
+            _mqttClient!.reconnect();
+            return
+        }
+    
+        let mqttHost : String = "mqtt.sicherheitskritisch.de"
+        let mqttPort : Int32 = 8883
+        let mqttUsername : String = KeychainWrapper.singletonInstance.readUsernameFromKeychain()
+        let mqttPassword : String = KeychainWrapper.singletonInstance.readPasswordFromKeychain()
+
+        if (mqttUsername == "" || mqttPassword == "")
+        {
+            NSLog("The given MQTT credentials are not available!")
+            return
+        }
 
         NSLog("Try to establish new connection...")
     
@@ -49,27 +59,13 @@ class MQTTConnection
             mqttConfig.mqttTlsOpts = MQTTTlsOpts(tls_insecure: false, cert_reqs: CertReqs.SSL_VERIFY_PEER, tls_version: "tlsv1.1", ciphers: "AES256-SHA")
 
             mqttConfig.onMessageCallback = { mqttMessage in
-                for observer in self.onSubscriptionMessageObservers
+                for observer in self._onSubscriptionMessageObservers
                 {
                     observer.messageWasReceived(mqttMessage)
                 }
             }
-
-            //let newMQTTClient = MQTT.newConnection(mqttConfig) // connectImmediately: true
-            
-//            // Check if the connection was successful
-//            if (newMQTTClient.isConnected == false)
-//            {
-//                //NSLog("Connection failed! Disconnecting...")
-//                //newMQTTClient.disconnect();
-//            }
-//            else
-//            {
-//                self.mqttClient = newMQTTClient
-//            }
         
-            mqttClient = MQTT.newConnection(mqttConfig, connectImmediately: true)
-        
+            _mqttClient = MQTT.newConnection(mqttConfig, connectImmediately: true)
         }
         catch ConnectError.NoCACertificateFound
         {
@@ -80,47 +76,33 @@ class MQTTConnection
             NSLog("Unknown error occured while connecting to MQTT server!")
         }
     }
-    
-    func reconnect(forceReconnect: Bool = false)
+
+    func client() -> MQTTClient
     {
-        if (forceReconnect == true)
-        {
-            connect()
-        }
-        else
-        {
-            if (mqttClient != nil && mqttClient!.isConnected == false)
-            {
-                mqttClient!.reconnect();
-            }
-            else
-            {
-                connect()
-            }
-        }
+        return _mqttClient!;
     }
-    
+
     func disconnect()
     {
-        if (mqttClient != nil && mqttClient!.isConnected == true)
+        if (_mqttClient != nil && _mqttClient!.isConnected == true)
         {
             NSLog("Disconnecting...")
-            mqttClient!.disconnect();
+            _mqttClient!.disconnect();
         }
     }
     
     func addOnSubscriptionMessageObserver(observer : OnSubscriptionMessageObserver)
     {
-        onSubscriptionMessageObservers.append(observer)
+        _onSubscriptionMessageObservers.append(observer)
     }
 
     func removeOnSubscriptionMessageObserver(observer : OnSubscriptionMessageObserver)
     {
-        for i in onSubscriptionMessageObservers.indices
+        for i in _onSubscriptionMessageObservers.indices
         {
-            if onSubscriptionMessageObservers[i] === observer
+            if _onSubscriptionMessageObservers[i] === observer
             {
-                onSubscriptionMessageObservers.removeAtIndex(i)
+                _onSubscriptionMessageObservers.removeAtIndex(i)
                 break
             }
         }
