@@ -30,7 +30,7 @@
 
 #define PIN_STATUSLED           LED_BUILTIN
 
-#define PIN_NEOPIXELS           5       // GPIO5 = D1
+#define PIN_NEOPIXELS           5 // GPIO5 = D1
 
 #define NEOPIXELS_COUNT         4
 
@@ -128,46 +128,60 @@ uint32_t Wheel(byte WheelPos) {
 
 
 
+uint32_t getRGBColorFromPayload(char* payload, uint8_t startPosition)
+{
+    uint32_t rgbColor = 0;
 
+    if (!payload)
+    {
+        Serial.println("Invalid argument (nullpointer) given!");
+    }
+    else
+    {
+        // Pre-initialized char array (length = 7) with terminating null character:
+        char rbgColorString[7] = { '0', '0', '0', '0', '0', '0', '\0' };
+        strncpy(rbgColorString, payload + startPosition, 6);
+
+        // Convert hexadecimal RGB color strings to decimal integer
+        uint32_t convertedRGBColor = strtol(rbgColorString, NULL, 16);
+
+        // Verify that the given color values are in a valid range
+        if ( convertedRGBColor >= 0x000000 && convertedRGBColor <= 0xFFFFFF )
+        {
+            rgbColor = convertedRGBColor;
+        }
+    }
+
+    return rgbColor;
+}
 
 void _MQTTCallback(char* topic, byte* payload, unsigned int length)
 {
     // Nullpointer check
     if (!topic || !payload)
     {
+        Serial.println("Invalid argument (nullpointer) given!");
         return ;
     }
 
-    Serial.print("Message arrived on channel: ");
-    Serial.println(topic);
+    Serial.printf("Message arrived on channel: %s\n", topic);
 
+    /*
+     * Example payload:
+     * 0AABBCCDDEEFF
+     *
+     * Scene effect: 0
+     * Color 1 (as hexadecimal RGB value): AABBCC
+     * Color 2 (as hexadecimal RGB value): DDEEFF
+     *
+     */
+    char* payloadAsCharPointer = (char*) payload;
 
+    char lightSceneEffect = payloadAsCharPointer[0];
+    uint32_t lightSceneColor1 = getRGBColorFromPayload(payloadAsCharPointer, 1);
+    uint32_t lightSceneColor2 = getRGBColorFromPayload(payloadAsCharPointer, 1 + 6);
 
-
-    char* payloadAsCharPointer =  (char*) payload;
-
-
-    char sceneEffectType = payloadAsCharPointer[0];
-
-    char neopixelColorString1[7]; // length = 7
-    strncpy(neopixelColorString1, payloadAsCharPointer + 1, 6);
-    neopixelColorString1[6] = '\0';
-
-    char neopixelColorString2[7]; // length = 7
-    strncpy(neopixelColorString2, payloadAsCharPointer + 1 + 6, 6);
-    neopixelColorString2[6] = '\0';
-
-
-    //if (strcmp(payloadAsCharPointer, "hallo") == 0)
-    Serial.println(sceneEffectType);
-    Serial.println(neopixelColorString1);
-    Serial.println(neopixelColorString2);
-
-    uint32_t neopixelColor1 = strtol(neopixelColorString1, NULL, 16);
-    uint32_t neopixelColor2 = strtol(neopixelColorString2, NULL, 16);
-
-
-    switch(sceneEffectType)
+    switch(lightSceneEffect)
     {
         case '0':
         {
@@ -177,13 +191,13 @@ void _MQTTCallback(char* topic, byte* payload, unsigned int length)
 
         case '1':
         {
-            neopixel_showSingleColorScene(neopixelColor1);
+            neopixel_showSingleColorScene(lightSceneColor1);
         }
         break;
 
         case '2':
         {
-            neopixel_showMixedColorScene(neopixelColor1, neopixelColor2);
+            neopixel_showMixedColorScene(lightSceneColor1, lightSceneColor2);
         }
         break;
     }
@@ -232,8 +246,7 @@ void setupNeopixels()
 
 void setupWifi()
 {
-    Serial.print("Connecting to ");
-    Serial.println(WIFI_SSID);
+    Serial.printf("Connecting to %s\n", WIFI_SSID);
 
     // Disable Wifi access point mode
     WiFi.mode(WIFI_STA);
@@ -251,7 +264,8 @@ void setupWifi()
 
     Serial.println();
     Serial.println("WiFi connected.");
-    Serial.println("IP address: ");
+
+    Serial.print("Obtained IP address: ");
     Serial.println(WiFi.localIP());
 }
 
@@ -272,7 +286,7 @@ void connectMQTT()
         uint8_t retries = CONNECTION_RETRIES;
     #endif
 
-    while (!MQTTClient.connected())
+    while ( ! MQTTClient.connected() )
     {
         Serial.print("Attempting MQTT connection... ");
 
@@ -288,8 +302,7 @@ void connectMQTT()
         }
         else
         {
-            Serial.print("Connection failed! Error code: ");
-            Serial.println(MQTTClient.state());
+            Serial.printf("Connection failed! Error code: %s\n", MQTTClient.state());
 
             // Blink 3 times for indication of failed MQTT connection
             blinkStatusLED(3);
