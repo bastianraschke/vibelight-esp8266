@@ -31,25 +31,17 @@
 #define PIN_STATUSLED           LED_BUILTIN
 
 #define PIN_NEOPIXELS           5 // GPIO5 = D1
-
 #define NEOPIXELS_COUNT         4
 
-
-/*
- * Important note:
- * On the ESP8266 the output state 'LOW' means enabled, the state 'HIGH' disabled!
- *
- */
 
 WiFiClientSecure secureWifiClient = WiFiClientSecure();
 PubSubClient MQTTClient = PubSubClient(secureWifiClient);
 Adafruit_NeoPixel neopixelStrip = Adafruit_NeoPixel(NEOPIXELS_COUNT, PIN_NEOPIXELS, NEO_GRB + NEO_KHZ800);
 
-
-
-
-
-
+/*
+ * Neopixel effects
+ *
+ */
 
 void neopixel_off()
 {
@@ -88,47 +80,101 @@ void neopixel_showMixedColorScene(const uint32_t beginColor, const uint32_t endC
     neopixelStrip.show();
 }
 
+void neopixel_rainbowScene()
+{
+    uint16_t i, j;
 
-// Fill the dots one after the other with a color
-void colorWipe(uint32_t c, uint8_t wait) {
-  for(uint16_t i=0; i<neopixelStrip.numPixels(); i++) {
-    neopixelStrip.setPixelColor(i, c);
-    neopixelStrip.show();
-    delay(wait);
-  }
-}
-
-void rainbow(uint8_t wait) {
-  uint16_t i, j;
-
-  for(j=0; j<256; j++) {
-    for(i=0; i<neopixelStrip.numPixels(); i++) {
-      neopixelStrip.setPixelColor(i, Wheel((i+j) & 255));
+    for(j = 0; j < 256; j++)
+    {
+        for(i = 0; i < neopixelStrip.numPixels(); i++)
+        {
+            neopixelStrip.setPixelColor(i, _getColorOnWheelPosition((i+j) & 255) );
+        }
     }
+
     neopixelStrip.show();
-    delay(wait);
-  }
 }
 
-// Input a value 0 to 255 to get a color value.
-// The colours are a transition r - g - b - back to r.
-uint32_t Wheel(byte WheelPos) {
-  WheelPos = 255 - WheelPos;
-  if(WheelPos < 85) {
-    return neopixelStrip.Color(255 - WheelPos * 3, 0, WheelPos * 3);
-  }
-  if(WheelPos < 170) {
-    WheelPos -= 85;
-    return neopixelStrip.Color(0, WheelPos * 3, 255 - WheelPos * 3);
-  }
-  WheelPos -= 170;
-  return neopixelStrip.Color(WheelPos * 3, 255 - WheelPos * 3, 0);
+/*
+ * Input a value 0 to 255 to get a color value:
+ * The colours are a transition r - g - b - back to r.
+ *
+ */
+uint32_t _getColorOnWheelPosition(uint8_t position)
+{
+    uint32_t colorOnWheelPosition = 0;
+
+    position = 255 - position;
+
+    if (position < 85)
+    {
+        colorOnWheelPosition = neopixelStrip.Color(255 - position * 3, 0, position * 3);
+    }
+    else if (position < 170)
+    {
+        position -= 85;
+        colorOnWheelPosition = neopixelStrip.Color(0, position * 3, 255 - position * 3);
+    }
+    else
+    {
+        position -= 170;
+        colorOnWheelPosition = neopixelStrip.Color(position * 3, 255 - position * 3, 0);
+    }
+
+    return colorOnWheelPosition;
 }
 
 
 
 
-uint32_t getRGBColorFromPayload(char* payload, uint8_t startPosition)
+
+
+
+
+
+
+
+
+
+
+
+
+
+void _MQTTCallback(char* topic, byte* payload, unsigned int length)
+{
+    if (!topic || !payload)
+    {
+        Serial.println("Invalid argument (nullpointer) given!");
+        return ;
+    }
+    else
+    {
+        Serial.printf("Message arrived on channel: %s\n", topic);
+
+        /*
+         * Example payload:
+         * 0AABBCCDDEEFF
+         *
+         * Scene effect: 0
+         * Color 1 (as hexadecimal RGB value): AABBCC
+         * Color 2 (as hexadecimal RGB value): DDEEFF
+         *
+         */
+        char* payloadAsCharPointer = (char*) payload;
+
+        char lightSceneEffect = payloadAsCharPointer[0];
+        uint32_t lightSceneColor1 = _getRGBColorFromPayload(payloadAsCharPointer, 1);
+        uint32_t lightSceneColor2 = _getRGBColorFromPayload(payloadAsCharPointer, 1 + 6);
+
+        Serial.printf("Scene effect: %c\n", lightSceneEffect);
+        Serial.printf("Color 1: %06X\n", lightSceneColor1);
+        Serial.printf("Color 2: %06X\n", lightSceneColor2);
+
+        _showScene(lightSceneEffect, lightSceneColor1, lightSceneColor2);
+    }
+}
+
+uint32_t _getRGBColorFromPayload(char* payload, uint8_t startPosition)
 {
     uint32_t rgbColor = 0;
 
@@ -138,6 +184,8 @@ uint32_t getRGBColorFromPayload(char* payload, uint8_t startPosition)
     }
     else
     {
+        Serial.println(sizeof(payload));
+
         // Pre-initialized char array (length = 7) with terminating null character:
         char rbgColorString[7] = { '0', '0', '0', '0', '0', '0', '\0' };
         strncpy(rbgColorString, payload + startPosition, 6);
@@ -155,32 +203,8 @@ uint32_t getRGBColorFromPayload(char* payload, uint8_t startPosition)
     return rgbColor;
 }
 
-void _MQTTCallback(char* topic, byte* payload, unsigned int length)
+void _showScene(char lightSceneEffect, uint32_t lightSceneColor1, uint32_t lightSceneColor2)
 {
-    // Nullpointer check
-    if (!topic || !payload)
-    {
-        Serial.println("Invalid argument (nullpointer) given!");
-        return ;
-    }
-
-    Serial.printf("Message arrived on channel: %s\n", topic);
-
-    /*
-     * Example payload:
-     * 0AABBCCDDEEFF
-     *
-     * Scene effect: 0
-     * Color 1 (as hexadecimal RGB value): AABBCC
-     * Color 2 (as hexadecimal RGB value): DDEEFF
-     *
-     */
-    char* payloadAsCharPointer = (char*) payload;
-
-    char lightSceneEffect = payloadAsCharPointer[0];
-    uint32_t lightSceneColor1 = getRGBColorFromPayload(payloadAsCharPointer, 1);
-    uint32_t lightSceneColor2 = getRGBColorFromPayload(payloadAsCharPointer, 1 + 6);
-
     switch(lightSceneEffect)
     {
         case '0':
@@ -200,6 +224,12 @@ void _MQTTCallback(char* topic, byte* payload, unsigned int length)
             neopixel_showMixedColorScene(lightSceneColor1, lightSceneColor2);
         }
         break;
+
+        case '3':
+        {
+            neopixel_rainbowScene();
+        }
+        break;
     }
 }
 
@@ -209,8 +239,11 @@ void _MQTTCallback(char* topic, byte* payload, unsigned int length)
 
 
 
-
-
+/*
+ * Important note:
+ * On the ESP8266 the output state 'LOW' means enabled, the state 'HIGH' disabled!
+ *
+ */
 
 void blinkStatusLED(const int times)
 {
