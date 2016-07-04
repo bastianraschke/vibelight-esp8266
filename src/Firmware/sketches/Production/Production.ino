@@ -31,7 +31,7 @@
 #define PIN_STATUSLED           LED_BUILTIN
 
 #define PIN_NEOPIXELS           5 // GPIO5 = D1
-#define NEOPIXELS_COUNT         4
+#define NEOPIXELS_COUNT         60
 
 
 WiFiClientSecure secureWifiClient = WiFiClientSecure();
@@ -80,64 +80,19 @@ void neopixel_showMixedColorScene(const uint32_t beginColor, const uint32_t endC
     neopixelStrip.show();
 }
 
-void neopixel_rainbowScene()
+void neopixel_showRainbowScene(const uint32_t beginColor, const uint32_t endColor)
 {
-    uint16_t i, j;
+    // for(i = 0; i < neopixelStrip.numPixels(); i++)
+    // {
+    //     uint8_t r = (beginColor * p) + (endColor * (1 - p))
 
-    for(j = 0; j < 256; j++)
-    {
-        for(i = 0; i < neopixelStrip.numPixels(); i++)
-        {
-            neopixelStrip.setPixelColor(i, _getColorOnWheelPosition((i+j) & 255) );
-        }
-    }
+    //     uint32_t stepColor = neopixelStrip.Color(r, g, b);
 
-    neopixelStrip.show();
+    //     neopixelStrip.setPixelColor(i, stepColor);
+    // }
+
+    // neopixelStrip.show();
 }
-
-/*
- * Input a value 0 to 255 to get a color value:
- * The colours are a transition r - g - b - back to r.
- *
- */
-uint32_t _getColorOnWheelPosition(uint8_t position)
-{
-    uint32_t colorOnWheelPosition = 0;
-
-    position = 255 - position;
-
-    if (position < 85)
-    {
-        colorOnWheelPosition = neopixelStrip.Color(255 - position * 3, 0, position * 3);
-    }
-    else if (position < 170)
-    {
-        position -= 85;
-        colorOnWheelPosition = neopixelStrip.Color(0, position * 3, 255 - position * 3);
-    }
-    else
-    {
-        position -= 170;
-        colorOnWheelPosition = neopixelStrip.Color(position * 3, 255 - position * 3, 0);
-    }
-
-    return colorOnWheelPosition;
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 void _MQTTCallback(char* topic, byte* payload, unsigned int length)
@@ -227,17 +182,14 @@ void _showScene(char lightSceneEffect, uint32_t lightSceneColor1, uint32_t light
 
         case '3':
         {
-            neopixel_rainbowScene();
+            neopixel_showRainbowScene();
         }
         break;
+
+        // Add more effects if desired:
+        // ...
     }
 }
-
-
-
-
-
-
 
 /*
  * Important note:
