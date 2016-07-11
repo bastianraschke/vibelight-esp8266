@@ -63,25 +63,25 @@ void neopixel_showSingleColorScene(const uint32_t color)
     neopixelStrip.show();
 }
 
-void neopixel_showMixedColorScene(const uint32_t beginColor, const uint32_t endColor)
+void neopixel_showMixedColorScene(const uint32_t color1, const uint32_t color2)
 {
     const uint16_t neopixelCount = neopixelStrip.numPixels();
     const uint16_t middleOfLEDStripe = neopixelCount / 2;
 
     for (uint16_t i = 0; i < middleOfLEDStripe; i++)
     {
-        neopixelStrip.setPixelColor(i, beginColor);
+        neopixelStrip.setPixelColor(i, color1);
     }
 
     for (uint16_t i = middleOfLEDStripe; i < neopixelCount; i++)
     {
-        neopixelStrip.setPixelColor(i, endColor);
+        neopixelStrip.setPixelColor(i, color2);
     }
 
     neopixelStrip.show();
 }
 
-void neopixel_showRainbowScene(const uint32_t beginColor, const uint32_t endColor)
+void neopixel_showRainbowScene(const uint32_t color1, const uint32_t color2)
 {
     const uint16_t neopixelCount = neopixelStrip.numPixels();
 
@@ -89,20 +89,19 @@ void neopixel_showRainbowScene(const uint32_t beginColor, const uint32_t endColo
     {
         float percentage = _map(i, 0.0f, (float) neopixelCount, 0.0f, 1.0f);
 
-        uint8_t beginColor_r = (beginColor >> 16) & 0xFF;
-        uint8_t beginColor_g = (beginColor >>  8) & 0xFF;
-        uint8_t beginColor_b = (beginColor >>  0) & 0xFF;
+        uint8_t color1_r = (color1 >> 16) & 0xFF;
+        uint8_t color1_g = (color1 >>  8) & 0xFF;
+        uint8_t color1_b = (color1 >>  0) & 0xFF;
 
-        uint8_t endColor_r = (endColor >> 16) & 0xFF;
-        uint8_t endColor_g = (endColor >>  8) & 0xFF;
-        uint8_t endColor_b = (endColor >>  0) & 0xFF;
+        uint8_t color2_r = (color2 >> 16) & 0xFF;
+        uint8_t color2_g = (color2 >>  8) & 0xFF;
+        uint8_t color2_b = (color2 >>  0) & 0xFF;
 
-        uint8_t r = (beginColor_r * percentage) + (endColor_r * (1 - percentage));
-        uint8_t g = (beginColor_g * percentage) + (endColor_g * (1 - percentage));
-        uint8_t b = (beginColor_b * percentage) + (endColor_b * (1 - percentage));
+        uint8_t r = (color1_r * percentage) + (color2_r * (1 - percentage));
+        uint8_t g = (color1_g * percentage) + (color2_g * (1 - percentage));
+        uint8_t b = (color1_b * percentage) + (color2_b * (1 - percentage));
 
         Serial.printf("stepColor %02X%02X%02X\n", r, g, b);
-        Serial.println();
 
         uint32_t stepColor = neopixelStrip.Color(r, g, b);
         neopixelStrip.setPixelColor(i, stepColor);
@@ -139,14 +138,15 @@ void _MQTTCallback(char* topic, byte* payload, unsigned int length)
         char* payloadAsCharPointer = (char*) payload;
 
         char lightSceneEffect = payloadAsCharPointer[0];
-        uint32_t lightSceneColor1 = _getRGBColorFromPayload(payloadAsCharPointer, 1);
-        uint32_t lightSceneColor2 = _getRGBColorFromPayload(payloadAsCharPointer, 1 + 6);
+        uint32_t color1 = _getRGBColorFromPayload(payloadAsCharPointer, 1);
+        uint32_t color2 = _getRGBColorFromPayload(payloadAsCharPointer, 1 + 6);
 
         Serial.printf("Scene effect: %c\n", lightSceneEffect);
-        Serial.printf("Color 1: %06X\n", lightSceneColor1);
-        Serial.printf("Color 2: %06X\n", lightSceneColor2);
+        Serial.printf("Color 1: %06X\n", color1);
+        Serial.printf("Color 2: %06X\n", color2);
 
-        showScene(lightSceneEffect, lightSceneColor1, lightSceneColor2);
+        showScene(lightSceneEffect, color1, color2);
+        saveSceneToEEPROM(lightSceneEffect, color1, color2);
     }
 }
 
@@ -177,7 +177,7 @@ uint32_t _getRGBColorFromPayload(char* payload, uint8_t startPosition)
     return rgbColor;
 }
 
-void showScene(char lightSceneEffect, uint32_t lightSceneColor1, uint32_t lightSceneColor2)
+void showScene(char lightSceneEffect, uint32_t color1, uint32_t color2)
 {
     switch(lightSceneEffect)
     {
@@ -189,19 +189,19 @@ void showScene(char lightSceneEffect, uint32_t lightSceneColor1, uint32_t lightS
 
         case '1':
         {
-            neopixel_showSingleColorScene(lightSceneColor1);
+            neopixel_showSingleColorScene(color1);
         }
         break;
 
         case '2':
         {
-            neopixel_showMixedColorScene(lightSceneColor1, lightSceneColor2);
+            neopixel_showMixedColorScene(color1, color2);
         }
         break;
 
         case '3':
         {
-            neopixel_showRainbowScene(lightSceneColor1, lightSceneColor2);
+            neopixel_showRainbowScene(color1, color2);
         }
         break;
 
@@ -210,27 +210,25 @@ void showScene(char lightSceneEffect, uint32_t lightSceneColor1, uint32_t lightS
     }
 }
 
-void showLastSceneFromEEPROM()
+void saveSceneToEEPROM(char lightSceneEffect, uint32_t color1, uint32_t color2)
 {
-    // showScene(char lightSceneEffect, uint32_t lightSceneColor1, uint32_t lightSceneColor2);
+
 }
 
-
-/*
- * Important note:
- * On the ESP8266 the output state 'LOW' means enabled, the state 'HIGH' disabled!
- *
- */
+void showLastSceneFromEEPROM()
+{
+    // showScene(char lightSceneEffect, uint32_t color1, uint32_t color2);
+}
 
 void blinkStatusLED(const int times)
 {
     for (int i = 0; i < times; i++)
     {
-        // Enable
+        // Enable LED
         digitalWrite(PIN_STATUSLED, LOW);
         delay(100);
 
-        // Disable
+        // Disable LED
         digitalWrite(PIN_STATUSLED, HIGH);
         delay(100);
     }
@@ -291,11 +289,11 @@ void connectMQTT()
         uint8_t retries = CONNECTION_RETRIES;
     #endif
 
-    while ( ! MQTTClient.connected() )
+    while ( MQTTClient.connected() == false )
     {
         Serial.print("Attempting MQTT connection... ");
 
-        if (MQTTClient.connect(MQTT_CLIENTID, MQTT_USERNAME, MQTT_PASSWORD))
+        if (MQTTClient.connect(MQTT_CLIENTID, MQTT_USERNAME, MQTT_PASSWORD) == true)
         {
             Serial.println("Connected.");
 
