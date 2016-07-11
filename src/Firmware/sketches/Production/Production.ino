@@ -31,7 +31,7 @@
 #define PIN_STATUSLED           LED_BUILTIN
 
 #define PIN_NEOPIXELS           5 // GPIO5 = D1
-#define NEOPIXELS_COUNT         60
+#define NEOPIXELS_COUNT         4
 
 
 WiFiClientSecure secureWifiClient = WiFiClientSecure();
@@ -65,14 +65,15 @@ void neopixel_showSingleColorScene(const uint32_t color)
 
 void neopixel_showMixedColorScene(const uint32_t beginColor, const uint32_t endColor)
 {
-    const uint16_t middleOfLEDStripe = neopixelStrip.numPixels() / 2;
+    const uint16_t neopixelCount = neopixelStrip.numPixels();
+    const uint16_t middleOfLEDStripe = neopixelCount / 2;
 
     for (uint16_t i = 0; i < middleOfLEDStripe; i++)
     {
         neopixelStrip.setPixelColor(i, beginColor);
     }
 
-    for (uint16_t i = middleOfLEDStripe; i < neopixelStrip.numPixels(); i++)
+    for (uint16_t i = middleOfLEDStripe; i < neopixelCount; i++)
     {
         neopixelStrip.setPixelColor(i, endColor);
     }
@@ -82,16 +83,37 @@ void neopixel_showMixedColorScene(const uint32_t beginColor, const uint32_t endC
 
 void neopixel_showRainbowScene(const uint32_t beginColor, const uint32_t endColor)
 {
-    // for(i = 0; i < neopixelStrip.numPixels(); i++)
-    // {
-    //     uint8_t r = (beginColor * p) + (endColor * (1 - p))
+    const uint16_t neopixelCount = neopixelStrip.numPixels();
 
-    //     uint32_t stepColor = neopixelStrip.Color(r, g, b);
+    for(uint16_t i = 0; i < neopixelCount; i++)
+    {
+        float percentage = _map(i, 0.0f, (float) neopixelCount, 0.0f, 1.0f);
 
-    //     neopixelStrip.setPixelColor(i, stepColor);
-    // }
+        uint8_t beginColor_r = (beginColor >> 16) & 0xFF;
+        uint8_t beginColor_g = (beginColor >>  8) & 0xFF;
+        uint8_t beginColor_b = (beginColor >>  0) & 0xFF;
 
-    // neopixelStrip.show();
+        uint8_t endColor_r = (endColor >> 16) & 0xFF;
+        uint8_t endColor_g = (endColor >>  8) & 0xFF;
+        uint8_t endColor_b = (endColor >>  0) & 0xFF;
+
+        uint8_t r = (beginColor_r * percentage) + (endColor_r * (1 - percentage));
+        uint8_t g = (beginColor_g * percentage) + (endColor_g * (1 - percentage));
+        uint8_t b = (beginColor_b * percentage) + (endColor_b * (1 - percentage));
+
+        Serial.printf("stepColor %02X%02X%02X\n", r, g, b);
+        Serial.println();
+
+        uint32_t stepColor = neopixelStrip.Color(r, g, b);
+        neopixelStrip.setPixelColor(i, stepColor);
+    }
+
+    neopixelStrip.show();
+}
+
+float _map(float x, float in_min, float in_max, float out_min, float out_max)
+{
+    return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
 }
 
 
@@ -100,7 +122,6 @@ void _MQTTCallback(char* topic, byte* payload, unsigned int length)
     if (!topic || !payload)
     {
         Serial.println("Invalid argument (nullpointer) given!");
-        return ;
     }
     else
     {
@@ -125,13 +146,13 @@ void _MQTTCallback(char* topic, byte* payload, unsigned int length)
         Serial.printf("Color 1: %06X\n", lightSceneColor1);
         Serial.printf("Color 2: %06X\n", lightSceneColor2);
 
-        _showScene(lightSceneEffect, lightSceneColor1, lightSceneColor2);
+        showScene(lightSceneEffect, lightSceneColor1, lightSceneColor2);
     }
 }
 
 uint32_t _getRGBColorFromPayload(char* payload, uint8_t startPosition)
 {
-    uint32_t rgbColor = 0;
+    uint32_t rgbColor = 0x000000;
 
     if (!payload)
     {
@@ -139,8 +160,6 @@ uint32_t _getRGBColorFromPayload(char* payload, uint8_t startPosition)
     }
     else
     {
-        Serial.println(sizeof(payload));
-
         // Pre-initialized char array (length = 7) with terminating null character:
         char rbgColorString[7] = { '0', '0', '0', '0', '0', '0', '\0' };
         strncpy(rbgColorString, payload + startPosition, 6);
@@ -158,7 +177,7 @@ uint32_t _getRGBColorFromPayload(char* payload, uint8_t startPosition)
     return rgbColor;
 }
 
-void _showScene(char lightSceneEffect, uint32_t lightSceneColor1, uint32_t lightSceneColor2)
+void showScene(char lightSceneEffect, uint32_t lightSceneColor1, uint32_t lightSceneColor2)
 {
     switch(lightSceneEffect)
     {
@@ -182,7 +201,7 @@ void _showScene(char lightSceneEffect, uint32_t lightSceneColor1, uint32_t light
 
         case '3':
         {
-            neopixel_showRainbowScene();
+            neopixel_showRainbowScene(lightSceneColor1, lightSceneColor2);
         }
         break;
 
@@ -190,6 +209,12 @@ void _showScene(char lightSceneEffect, uint32_t lightSceneColor1, uint32_t light
         // ...
     }
 }
+
+void showLastSceneFromEEPROM()
+{
+    // showScene(char lightSceneEffect, uint32_t lightSceneColor1, uint32_t lightSceneColor2);
+}
+
 
 /*
  * Important note:
@@ -214,19 +239,14 @@ void blinkStatusLED(const int times)
 void setupPins()
 {
     pinMode(PIN_STATUSLED, OUTPUT);
-
-    neopixelStrip.begin();
-
-    // Initialize all pixels to 'off'
-    neopixelStrip.show();
 }
 
 void setupNeopixels()
 {
     neopixelStrip.begin();
+    neopixelStrip.setBrightness(255);
 
-    const uint32_t defaultColor = neopixelStrip.Color(240, 0, 255);
-    neopixel_showSingleColorScene(defaultColor);
+    showLastSceneFromEEPROM();
 }
 
 void setupWifi()
