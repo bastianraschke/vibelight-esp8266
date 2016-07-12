@@ -32,7 +32,7 @@
 #define PIN_STATUSLED           LED_BUILTIN
 
 #define PIN_NEOPIXELS           5       // GPIO5 = D1
-#define NEOPIXELS_COUNT         60
+#define NEOPIXELS_COUNT         4
 #define NEOPIXELS_BRIGHTNESS    255     // [0..255]
 
 WiFiClientSecure secureWifiClient = WiFiClientSecure();
@@ -100,30 +100,8 @@ void neopixel_showRainbowScene(const uint32_t color1, const uint32_t color2)
     {
         float percentage = _mapPixelCountToPercentage(i, neopixelCount);
 
-
-
-
-
-
-
-
-        char temperature[10];
-        char str_temp[6];
-
-        /* 4 is mininum width, 2 is precision; float value is copied onto str_temp*/
-        dtostrf(percentage, 4, 2, str_temp);
-        sprintf(temperature,"%s F", str_temp);
-        Serial.println(temperature);
-
-
-
-
-
-
-
-
-
         // Calculate the color of this iteration
+        // see: https://stackoverflow.com/questions/27532/ and https://stackoverflow.com/questions/22218140/
         const uint8_t r = (color1_r * percentage) + (color2_r * (1 - percentage));
         const uint8_t g = (color1_g * percentage) + (color2_g * (1 - percentage));
         const uint8_t b = (color1_b * percentage) + (color2_b * (1 - percentage));
@@ -145,11 +123,6 @@ float _mapPixelCountToPercentage(uint16_t i, float count)
 
     return (currentPixel - 0.0f) * (max - min) / (neopixelCount - 0.0f) + min;
 }
-
-
-
-
-
 
 void showScene(const char lightSceneEffect, const uint32_t color1, const uint32_t color2)
 {
@@ -184,7 +157,7 @@ void showScene(const char lightSceneEffect, const uint32_t color1, const uint32_
     }
 }
 
-void saveSceneToEEPROM(const char lightSceneEffect, const uint32_t color1, const uint32_t color2)
+void saveCurrentScene(const char lightSceneEffect, const uint32_t color1, const uint32_t color2)
 {
     _writeSceneEffectToEEPROM(0, lightSceneEffect);
 
@@ -192,7 +165,7 @@ void saveSceneToEEPROM(const char lightSceneEffect, const uint32_t color1, const
     _writeRGBColorToEEPROM(color1, 4);
 }
 
-void showLastSceneFromEEPROM()
+void showLastScene()
 {
     const char lightSceneEffect = _readSceneEffectFromEEPROM(0);
 
@@ -201,9 +174,6 @@ void showLastSceneFromEEPROM()
 
     showScene(lightSceneEffect, color1, color2);
 }
-
-
-
 
 /*
  * RGB color calculation helpers
@@ -381,7 +351,7 @@ void _MQTTRequestCallback(char* topic, byte* payload, unsigned int length)
         Serial.printf("Color 2: %06X\n", color2);
 
         showScene(lightSceneEffect, color1, color2);
-        saveSceneToEEPROM(lightSceneEffect, color1, color2);
+        saveCurrentScene(lightSceneEffect, color1, color2);
     }
 }
 
@@ -450,7 +420,7 @@ void setup()
     setupEEPROM();
 
     setupNeopixels();
-    showLastSceneFromEEPROM();
+    showLastScene();
     
     setupWifi();
     setupMQTT();
