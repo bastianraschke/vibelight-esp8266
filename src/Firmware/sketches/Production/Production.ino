@@ -14,26 +14,30 @@
  *
  */
 
-#define WIFI_SSID               ""
-#define WIFI_PASSWORD           ""
+#define WIFI_SSID                   ""
+#define WIFI_PASSWORD               ""
 
-#define MQTT_CLIENTID           "Vibelight Device 1.0"
-#define MQTT_SERVER             "mqtt.sicherheitskritisch.de"
-#define MQTT_PORT               8883
-#define MQTT_USERNAME           ""
-#define MQTT_PASSWORD           ""
+#define MQTT_CLIENTID               "Vibelight Device 1.0 xxxxxxxxxxxxx"
+#define MQTT_SERVER                 "mqtt.sicherheitskritisch.de"
+#define MQTT_PORT                   8883
+#define MQTT_USERNAME               "device_xxxxxxxxxxxxx"
+#define MQTT_PASSWORD               ""
 
-#define MQTT_CHANNEL_SWITCH     "/vibelight/api/1.0/"
-#define MQTT_CHANNEL_STATUS     "/vibelight/api/1.0/status/"
+#define MQTT_CHANNEL                "/vibelight/api/1.0/"
 
 // Try to connect N times and reset chip if limit is exceeded
-// #define CONNECTION_RETRIES      3
+// #define CONNECTION_RETRIES          3
 
-#define PIN_STATUSLED           LED_BUILTIN
+#define PIN_STATUSLED               LED_BUILTIN
 
-#define PIN_NEOPIXELS           5       // GPIO5 = D1
-#define NEOPIXELS_COUNT         4
-#define NEOPIXELS_BRIGHTNESS    255     // [0..255]
+#define PIN_NEOPIXELS               D1       // GPIO5 = D1
+#define NEOPIXELS_COUNT             60
+#define NEOPIXELS_BRIGHTNESS        255     // [0..255]
+
+
+#define EEPROM_ADDRESS_LIGHTSCENE   0
+#define EEPROM_ADDRESS_COLOR1       1
+#define EEPROM_ADDRESS_COLOR2       4
 
 WiFiClientSecure secureWifiClient = WiFiClientSecure();
 PubSubClient MQTTClient = PubSubClient(secureWifiClient);
@@ -124,9 +128,9 @@ float _mapPixelCountToPercentage(uint16_t i, float count)
     return (currentPixel - 0.0f) * (max - min) / (neopixelCount - 0.0f) + min;
 }
 
-void showScene(const char lightSceneEffect, const uint32_t color1, const uint32_t color2)
+void showScene(const char lightScene, const uint32_t color1, const uint32_t color2)
 {
-    switch(lightSceneEffect)
+    switch(lightScene)
     {
         case '0':
         {
@@ -151,69 +155,40 @@ void showScene(const char lightSceneEffect, const uint32_t color1, const uint32_
             neopixel_showRainbowScene(color1, color2);
         }
         break;
-
-        // Add more effects if desired:
-        // ...
     }
 }
 
-void saveCurrentScene(const char lightSceneEffect, const uint32_t color1, const uint32_t color2)
+void saveCurrentScene(const char lightScene, const uint32_t color1, const uint32_t color2)
 {
-    _writeSceneEffectToEEPROM(0, lightSceneEffect);
+    _setSceneEffectToEEPROM(lightScene);
 
-    _writeRGBColorToEEPROM(color1, 1);
-    _writeRGBColorToEEPROM(color1, 4);
+    _setRGBColorToEEPROM(color1, EEPROM_ADDRESS_COLOR1);
+    _setRGBColorToEEPROM(color2, EEPROM_ADDRESS_COLOR2);
 }
 
 void showLastScene()
 {
-    const char lightSceneEffect = _readSceneEffectFromEEPROM(0);
+    const char lightScene = _getSceneEffectFromEEPROM();
 
-    const uint32_t color1 = _readRGBColorFromEEPROM(1);
-    const uint32_t color2 = _readRGBColorFromEEPROM(4);
+    const uint32_t color1 = _getRGBColorFromEEPROM(EEPROM_ADDRESS_COLOR1);
+    const uint32_t color2 = _getRGBColorFromEEPROM(EEPROM_ADDRESS_COLOR2);
 
-    showScene(lightSceneEffect, color1, color2);
+    showScene(lightScene, color1, color2);
 }
 
-/*
- * RGB color calculation helpers
- *
- */
-
-uint32_t _getRGBColorFromPayload(const char* payload, const uint8_t startPosition)
+char _getSceneEffectFromEEPROM()
 {
-    uint32_t color = 0x000000;
-
-    if (!payload)
-    {
-        Serial.println("Invalid argument (nullpointer) given!");
-    }
-    else
-    {
-        // Pre-initialized char array (length = 7) with terminating null character:
-        char rbgColorString[7] = { '0', '0', '0', '0', '0', '0', '\0' };
-        strncpy(rbgColorString, payload + startPosition, 6);
-
-        // Convert hexadecimal RGB color strings to decimal integer
-        const uint32_t convertedRGBColor = strtol(rbgColorString, NULL, 16);
-
-        // Verify that the given color values are in a valid range
-        if ( convertedRGBColor >= 0x000000 && convertedRGBColor <= 0xFFFFFF )
-        {
-            color = convertedRGBColor;
-        }
-    }
-
-    return color;
+    const char lightScene = (char) EEPROM.read(EEPROM_ADDRESS_LIGHTSCENE);
+    return lightScene;
 }
 
-char _readSceneEffectFromEEPROM(const uint32_t startAddress)
+void _setSceneEffectToEEPROM(const char lightScene)
 {
-    const char lightSceneEffect = (char) EEPROM.read(startAddress);
-    return lightSceneEffect;
+    EEPROM.write(EEPROM_ADDRESS_LIGHTSCENE, (uint8_t) lightScene);
+    EEPROM.commit();
 }
 
-uint32_t _readRGBColorFromEEPROM(const uint32_t startAddress)
+uint32_t _getRGBColorFromEEPROM(const uint16_t startAddress)
 {
     uint32_t color = 0x000000;
 
@@ -225,13 +200,7 @@ uint32_t _readRGBColorFromEEPROM(const uint32_t startAddress)
     return color;
 }
 
-void _writeSceneEffectToEEPROM(const char lightSceneEffect, const uint32_t startAddress)
-{
-    EEPROM.write(startAddress, (uint8_t) lightSceneEffect);
-    EEPROM.commit();
-}
-
-void _writeRGBColorToEEPROM(const uint32_t color, const uint32_t startAddress)
+void _setRGBColorToEEPROM(const uint32_t color, const uint16_t startAddress)
 {
     // Split color to R, B, G parts
     const uint8_t r = (color >> 16) & 0xFF;
@@ -244,23 +213,6 @@ void _writeRGBColorToEEPROM(const uint32_t color, const uint32_t startAddress)
 
     EEPROM.commit();
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 void blinkStatusLED(const int times)
 {
@@ -342,17 +294,44 @@ void _MQTTRequestCallback(char* topic, byte* payload, unsigned int length)
          */
         const char* payloadAsCharPointer = (char*) payload;
 
-        const char lightSceneEffect = payloadAsCharPointer[0];
+        const char lightScene = payloadAsCharPointer[0];
         const uint32_t color1 = _getRGBColorFromPayload(payloadAsCharPointer, 1);
         const uint32_t color2 = _getRGBColorFromPayload(payloadAsCharPointer, 1 + 6);
 
-        Serial.printf("Scene effect: %c\n", lightSceneEffect);
+        Serial.printf("Light scene: %c\n", lightScene);
         Serial.printf("Color 1: %06X\n", color1);
         Serial.printf("Color 2: %06X\n", color2);
 
-        showScene(lightSceneEffect, color1, color2);
-        saveCurrentScene(lightSceneEffect, color1, color2);
+        showScene(lightScene, color1, color2);
+        saveCurrentScene(lightScene, color1, color2);
     }
+}
+
+uint32_t _getRGBColorFromPayload(const char* payload, const uint8_t startPosition)
+{
+    uint32_t color = 0x000000;
+
+    if (!payload)
+    {
+        Serial.println("Invalid argument (nullpointer) given!");
+    }
+    else
+    {
+        // Pre-initialized char array (length = 7) with terminating null character:
+        char rbgColorString[7] = { '0', '0', '0', '0', '0', '0', '\0' };
+        strncpy(rbgColorString, payload + startPosition, 6);
+
+        // Convert hexadecimal RGB color strings to decimal integer
+        const uint32_t convertedRGBColor = strtol(rbgColorString, NULL, 16);
+
+        // Verify that the given color values are in a valid range
+        if ( convertedRGBColor >= 0x000000 && convertedRGBColor <= 0xFFFFFF )
+        {
+            color = convertedRGBColor;
+        }
+    }
+
+    return color;
 }
 
 void setupMQTT()
@@ -381,7 +360,7 @@ void connectMQTT()
             Serial.println("Connected.");
 
             // (Re)subscribe on topic
-            MQTTClient.subscribe(MQTT_CHANNEL_SWITCH);
+            MQTTClient.subscribe(MQTT_CHANNEL);
 
             // Enable onboard LED permanently
             digitalWrite(PIN_STATUSLED, LOW);
@@ -414,7 +393,7 @@ void connectMQTT()
 void setup()
 {
     Serial.begin(115200);
-    delay(10);
+    delay(250);
 
     setupPins();
     setupEEPROM();
