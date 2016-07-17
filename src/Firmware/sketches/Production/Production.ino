@@ -368,7 +368,7 @@ void connectMQTT()
         }
         else
         {
-            Serial.printf("Connection failed! Error code: %s\n", MQTTClient.state());
+            Serial.printf("Connection failed! Error code: %i\n", MQTTClient.state());
 
             // Blink 3 times for indication of failed MQTT connection
             blinkStatusLED(3);
@@ -401,7 +401,7 @@ void setup()
 
     setupNeopixels();
     showLastScene();
-    
+
     setupWifi();
     setupMQTT();
 }
