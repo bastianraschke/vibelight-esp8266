@@ -47,7 +47,7 @@ class MainViewController: UIViewController
     {
         let sceneType : SceneMode = SceneMode.SINGLECOLOR
 
-        MQTTConnection.singletonInstance.client().publishString(self.buildCommand(sceneType, color1: "FFBE31", color2: "000000"),
+        MQTTConnection.singletonInstance.client().publishString(self.buildCommand(sceneType, color1: "FFB027", color2: "000000"),
             topic: "/vibelight/api/1.0/",
             qos: 2,
             retain: false
@@ -56,9 +56,9 @@ class MainViewController: UIViewController
 
     @IBAction func violetSceneButtonPressed(sender: UIButton)
     {
-        let sceneType : SceneMode = SceneMode.SINGLECOLOR
+        let sceneType : SceneMode = SceneMode.MULTICOLOR
 
-        MQTTConnection.singletonInstance.client().publishString(self.buildCommand(sceneType, color1: "be32ff", color2: "000000"),
+        MQTTConnection.singletonInstance.client().publishString(self.buildCommand(sceneType, color1: "A92CCE", color2: "CE2C2C"),
             topic: "/vibelight/api/1.0/",
             qos: 2,
             retain: false
