@@ -19,6 +19,7 @@
 
 #define MQTT_CLIENTID               "Vibelight Device 1.0 xxxxxxxxxxxxx"
 #define MQTT_SERVER                 "mqtt.sicherheitskritisch.de"
+#define MQTT_SERVER_TLS_FINGERPRINT "57 36 77 FE E4 3E A9 AE C2 3C 33 DC 60 82 56 18 18 4D 60 50"
 #define MQTT_PORT                   8883
 #define MQTT_USERNAME               "device_xxxxxxxxxxxxx"
 #define MQTT_PASSWORD               ""
@@ -86,7 +87,7 @@ void neopixel_showMixedColorScene(const uint32_t color1, const uint32_t color2)
     neopixelStrip.show();
 }
 
-void neopixel_showRainbowScene(const uint32_t color1, const uint32_t color2)
+void neopixel_showGradientScene(const uint32_t color1, const uint32_t color2)
 {
     const uint16_t neopixelCount = neopixelStrip.numPixels();
 
@@ -152,7 +153,7 @@ void showScene(const char lightScene, const uint32_t color1, const uint32_t colo
 
         case '3':
         {
-            neopixel_showRainbowScene(color1, color2);
+            neopixel_showGradientScene(color1, color2);
         }
         break;
     }
@@ -355,7 +356,7 @@ void connectMQTT()
     {
         Serial.print("Attempting MQTT connection... ");
 
-        if (MQTTClient.connect(MQTT_CLIENTID, MQTT_USERNAME, MQTT_PASSWORD) == true)
+        if (MQTTClient.connect(MQTT_CLIENTID, MQTT_USERNAME, MQTT_PASSWORD, MQTT_SERVER_TLS_FINGERPRINT) == true)
         {
             Serial.println("Connected.");
 
