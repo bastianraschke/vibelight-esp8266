@@ -1,0 +1,8 @@
+[submodule "src/Firmware/libraries/Adafruit_NeoPixel"]
+	path = src/Firmware/libraries/Adafruit_NeoPixel
+	url = https://github.com/adafruit/Adafruit_NeoPixel.git
+	branch = master
+[submodule "src/Firmware/libraries/PubSubClient"]
+	path = src/Firmware/libraries/PubSubClient
+	url = https://github.com/knolleary/pubsubclient.git
+	branch = master
