@@ -43,17 +43,6 @@ class MainViewController: UIViewController
         )
     }
 
-    @IBAction func warmWhiteSceneButtonPressed(sender: UIButton)
-    {
-        let sceneType : SceneMode = SceneMode.SINGLECOLOR
-
-        MQTTConnection.singletonInstance.client().publishString(self.buildCommand(sceneType, color1: "FFB027", color2: "000000"),
-            topic: "/vibelight/api/1.0/",
-            qos: 2,
-            retain: false
-        )
-    }
-
     @IBAction func violetSceneButtonPressed(sender: UIButton)
     {
         let sceneType : SceneMode = SceneMode.MULTICOLOR
@@ -65,6 +54,28 @@ class MainViewController: UIViewController
         )
     }
 
+    @IBAction func warmWhiteSceneButtonPressed(sender: UIButton)
+    {
+        let sceneType : SceneMode = SceneMode.SINGLECOLOR
+
+        MQTTConnection.singletonInstance.client().publishString(self.buildCommand(sceneType, color1: "FFB027", color2: "000000"),
+            topic: "/vibelight/api/1.0/",
+            qos: 2,
+            retain: false
+        )
+    }
+
+    @IBAction func coolBlueSceneButtonPressed(sender: UIButton)
+    {
+        let sceneType : SceneMode = SceneMode.GRADIENT
+
+        MQTTConnection.singletonInstance.client().publishString(self.buildCommand(sceneType, color1: "27D0FF", color2: "2CCE2C"),
+            topic: "/vibelight/api/1.0/",
+            qos: 2,
+            retain: false
+        )
+    }
+    
     @IBAction func offSceneButtonPressed(sender: UIButton)
     {
         let sceneType : SceneMode = SceneMode.OFF
@@ -82,4 +93,5 @@ enum SceneMode : String
     case OFF = "0"
     case SINGLECOLOR = "1"
     case MULTICOLOR = "2"
+    case GRADIENT = "3"
 }
