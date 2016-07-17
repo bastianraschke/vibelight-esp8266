@@ -4,5 +4,5 @@
 	branch = master
 [submodule "src/Firmware/libraries/PubSubClient"]
 	path = src/Firmware/libraries/PubSubClient
-	url = https://github.com/knolleary/pubsubclient.git
+	url = https://github.com/bastianraschke/pubsubclient.git
 	branch = master
