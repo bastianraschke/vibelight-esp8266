@@ -31,7 +31,7 @@
 
 #define PIN_STATUSLED               LED_BUILTIN
 
-#define PIN_NEOPIXELS               D1       // GPIO5 = D1
+#define PIN_NEOPIXELS               D1      // GPIO5 = D1
 #define NEOPIXELS_COUNT             60
 #define NEOPIXELS_BRIGHTNESS        255     // [0..255]
 
